@@ -1,0 +1,20 @@
+{
+  "name": "voiceit-ivr-demo",
+  "description": "A Demo showing an integration of Twilio's and VoiceIt's API for Voice Biometrics over an IVR System",
+  "repository": "https://github.com/voiceittech/voiceit-ivr-demo",
+  "keywords": ["biometrics", "authentication", "voice biometrics", "2FA"],
+  "env": {
+    "VOICEIT_DEVELOPER_ID": {
+      "description": "Your VoiceIt developerId obtained from signing up at bit.ly/voiceit-register",
+      "value":"882930ec6c5e4da7975032f2b9bc0c5b"
+    },
+    "VOICEPRINT_PHRASE": {
+        "description": "Your pre-approved voiceprint phrase from VoiceIt, that you want users to use, for example 'Never forget tomorrow is a new day'",
+        "value":"Esta é uma demonstração pra Vale"
+    },
+    "CONTENT_LANGUAGE": {
+        "description": "The content language for the pre-approved voiceprint phrase for example (en-US)",
+        "value":"pt-BR"
+    }
+  }
+}
