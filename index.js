@@ -169,10 +169,10 @@ app.post('/process_enrollment', function(req, res) {
       enrollCount++;
       // VoiceIt requires at least 3 successful enrollments.
       if (enrollCount > 2) {
-        utilities.speak(twiml, 'Obrigado, você agora está cadastrado e pronto para se autenticar.');
+        utilities.speak(twiml, 'Obrigada, você agora está cadastrado e pronto para se autenticar.');
         twiml.redirect('/authenticate');
       } else {
-        utilities.speak(twiml, 'Obrigado, gravação processada. Você precisará repetir a frase agora.');
+        utilities.speak(twiml, 'Obrigada, gravação processada. Você precisará repetir a frase agora.');
         twiml.redirect('/enroll?enrollCount=' + enrollCount);
       }
   }
