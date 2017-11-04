@@ -48,7 +48,7 @@ app.post('/incoming_call', function(req, res) {
     if (getUserResponse.ResponseCode === "SUC") {
 
       // Greet the caller when their account profile is recognized by the VoiceIt API.
-      utilities.speak(twiml, "Welcome back to the Voice It Voice Authentication Demo, your phone number has been recognized");
+      utilities.speak(twiml, "Seja bem-vindo novamente à demonstração Stefanini Rafael istrauti, seu número de telefone foi reconhecido.");
 
       // Let's provide the caller with an opportunity to enroll by typing `1` on
       // their phone's keypad.
@@ -74,7 +74,7 @@ app.post('/incoming_call', function(req, res) {
         callback: function(createUserResponse){
           console.log("The Server Responded with the JSON: ",createUserResponse);
           createUserResponse = JSON.parse(createUserResponse);
-          utilities.speak(twiml, "Seja bem-vindo à demonstração da Stefanini Rafael istrauti. Você é um novo usuário e será cadastrado novamente.");
+          utilities.speak(twiml, "Seja bem-vindo à demonstração da Stefanini Rafael istrauti. Você é um novo usuário e será cadastrado.");
           twiml.redirect('/enroll');
           res.type('text/xml');
           res.send(twiml.toString());
@@ -107,7 +107,7 @@ app.post('/enroll_or_authenticate', function(req, res) {
           password: caller.password,
           callback: function(createUserResponse) {
             console.log("Create User Responded with the JSON: ", createUserResponse);
-            utilities.speak(twiml, "You have chosen to create a new account with your Voice, you will now be asked to say a phrase three times, then you will be able to log in with that phrase");
+            utilities.speak(twiml, "Você escolheu criar uma nova conta. Será necessário repetir a frase três vezes antes de se autenticar.");
             twiml.redirect('/enroll');
             res.type('text/xml');
             res.send(twiml.toString());
@@ -145,7 +145,7 @@ app.post('/enroll_or_authenticate', function(req, res) {
 app.post('/enroll', function(req, res) {
   const enrollCount = req.query.enrollCount || 0;
   const twiml = new VoiceResponse();
-  utilities.speak(twiml, 'Please say the following phrase to enroll ');
+  utilities.speak(twiml, 'Por favor, fale a frase a seguir para se cadastrar. ');
   utilities.speak(twiml, config.chosenVoicePrintPhrase, config.contentLanguage);
 
   twiml.record({
@@ -169,17 +169,17 @@ app.post('/process_enrollment', function(req, res) {
       enrollCount++;
       // VoiceIt requires at least 3 successful enrollments.
       if (enrollCount > 2) {
-        utilities.speak(twiml, 'Thank you, recording received, you are now enrolled and ready to log in');
+        utilities.speak(twiml, 'Obrigado, você agora está cadastrado e pronto para se autenticar.');
         twiml.redirect('/authenticate');
       } else {
-        utilities.speak(twiml, 'Thank you, recording received, you will now be asked to record your phrase again');
+        utilities.speak(twiml, 'Obrigado, gravação processada. Você precisará repetir a frase agora.');
         twiml.redirect('/enroll?enrollCount=' + enrollCount);
       }
   }
 
     function enrollAgainLogic(body){
       body = JSON.stringify(body);
-      utilities.speak(twiml, 'Your recording was not successful, please try again');
+      utilities.speak(twiml, 'Não foi possível processar sua gravação. Por favor, tente novamente.');
       twiml.redirect('/enroll?enrollCount=' + enrollCount);
     }
 
@@ -224,7 +224,7 @@ app.post('/authenticate', function(req, res) {
 
   var twiml = new VoiceResponse();
 
-  utilities.speak(twiml, 'Please say the following phrase to authenticate ');
+  utilities.speak(twiml, 'Por favor, diga a frase seguinte para se autenticar ');
   utilities.speak(twiml, config.chosenVoicePrintPhrase, config.contentLanguage);
 
   twiml.record({
@@ -288,23 +288,23 @@ app.post('/process_authentication', function(req, res) {
       console.log("Authentication successful logic");
       utilities.speak(twiml, voiceIt.Result);
       //Thank them for calling
-      utilities.speak(twiml,'Thank you for calling voice its voice biometrics demo. Have a good day!');
+      utilities.speak(twiml,'Obrigado por ligar para a demonstração da Stefanini Rafael.');
       //Hang up
     } else if (numTries > 2) {
       //3 attempts failed
-      utilities.speak(twiml,'Authentications failed. We suggest you call back and select option 1 to re enroll and authenticate again.');
+      utilities.speak(twiml,'Desculpe, a autenticação falhou. Sugerimos que ligue novamente e pressione um para se cadastrar novamente.');
     } else {
 
       if(voiceIt.ResponseCode == "STTF"){
-        utilities.speak(twiml,"Authentication failed, it seems like you did not say ");
+        utilities.speak(twiml,"Desculpe, a autenticação falhou. Parece que você não disse ");
         utilities.speak(twiml,config.chosenVoicePrintPhrase, config.contentLanguage);
-        utilities.speak(twiml," please say the right phrase and try again");
+        utilities.speak(twiml," por favor, diga a frase correta e tente novamente");
         numTries = numTries + 1;
         twiml.redirect('/authenticate');
       }
       else if (voiceIt.ResponseCode == 'ATF') {
         console.log("Authentication failed logic");
-        utilities.speak(twiml,"Your authentication did not pass, please try again.");
+        utilities.speak(twiml,"Sua autenticação não deu certo. Por favor, tente novamente.");
         numTries = numTries + 1;
         twiml.redirect('/authenticate');
       }
@@ -320,10 +320,10 @@ app.post('/process_authentication', function(req, res) {
   function authNot200Logic(twiml,voiceIt){
     switch (voiceIt.ResponseCode) {
     case "VPND":
-        utilities.speak(twiml,"Voiceprint Phrase not detected. Please make sure to speak in your normal speed and tone.");
+        utilities.speak(twiml,"Frase não detectada. Por favor, fale pausadamente e com seu tom de voz normal.");
         break;
     default:
-        utilities.speak(twiml,"API Error, Your authentication did not pass, please try again.");
+        utilities.speak(twiml,"Erro. Por favor, tente novamente.");
       }
       numTries = numTries + 1;
       twiml.redirect('/authenticate');
