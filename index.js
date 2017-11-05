@@ -60,7 +60,7 @@ app.post('/incoming_call', function(req, res) {
         timeout: 5
       });
 
-      utilities.speak(gather, "Você pode logar. Ou pressione um para se cadastrar novamente.");
+      utilities.speak(gather, "Aguarde para se autenticar. Ou pressione um para se cadastrar novamente.");
 
       twiml.redirect('/enroll_or_authenticate?digits=TIMEOUT');
 
