@@ -283,12 +283,18 @@ app.post('/process_authentication', function(req, res) {
   	}
   });
 
+  function random (low, high) {
+    return Math.random() * (high - low) + low;
+}
+
   function auth200Logic(twiml,voiceIt){
     if (voiceIt.ResponseCode == "SUC") {
       console.log("Authentication successful logic");
       utilities.speak(twiml, voiceIt.Result);
       //Thank them for calling
-      utilities.speak(twiml,'Obrigado por ligar para a demonstração da Stefanini Rafael.');
+      utilities.speak(twiml,'Obrigada por ligar para a demonstração da Stefanini Rafael. Sua nova senha é. ' + 
+    + random(0,9).toString() + '.' + random(0,9).toString() + '.' + random(0,9).toString() + '.' + random(0,9).toString());
+
       //Hang up
     } else if (numTries > 2) {
       //3 attempts failed
