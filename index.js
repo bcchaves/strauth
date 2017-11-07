@@ -48,7 +48,7 @@ app.post('/incoming_call', function(req, res) {
     if (getUserResponse.ResponseCode === "SUC") {
 
       // Greet the caller when their account profile is recognized by the VoiceIt API.
-      utilities.speak(twiml, "Seja bem-vindo novamente à demonstração Stefanini Rafael istrauti, seu número de telefone foi reconhecido.");
+      utilities.speak(twiml, "Seja bem-vindo novamente à demonstração Stefanini Rafael istrauti.");
 
       // Let's provide the caller with an opportunity to enroll by typing `1` on
       // their phone's keypad.
@@ -74,7 +74,7 @@ app.post('/incoming_call', function(req, res) {
         callback: function(createUserResponse){
           console.log("The Server Responded with the JSON: ",createUserResponse);
           createUserResponse = JSON.parse(createUserResponse);
-          utilities.speak(twiml, "Seja bem-vindo à demonstração da Stefanini Rafael istrauti. Você é um novo usuário e será cadastrado.");
+          utilities.speak(twiml, "Seja bem-vindo à demonstração da Stefanini Rafael istrauti. Como este é seu primeiro acesso, será necessário se cadastrar.");
           twiml.redirect('/enroll');
           res.type('text/xml');
           res.send(twiml.toString());
@@ -145,7 +145,7 @@ app.post('/enroll_or_authenticate', function(req, res) {
 app.post('/enroll', function(req, res) {
   const enrollCount = req.query.enrollCount || 0;
   const twiml = new VoiceResponse();
-  utilities.speak(twiml, 'Por favor, fale a frase a seguir para se cadastrar. ');
+  utilities.speak(twiml, 'Por favor, após o bip fale a frase a seguir. ');
   utilities.speak(twiml, config.chosenVoicePrintPhrase, config.contentLanguage);
 
   twiml.record({
@@ -172,7 +172,7 @@ app.post('/process_enrollment', function(req, res) {
         utilities.speak(twiml, 'Obrigada, você agora está cadastrado e pronto para se autenticar.');
         twiml.redirect('/authenticate');
       } else {
-        utilities.speak(twiml, 'Obrigada, gravação processada. Você precisará repetir a frase agora.');
+        utilities.speak(twiml, 'Obrigada, gravação processada. Você precisará repetir a frase mais uma vez.');
         twiml.redirect('/enroll?enrollCount=' + enrollCount);
       }
   }
@@ -224,7 +224,7 @@ app.post('/authenticate', function(req, res) {
 
   var twiml = new VoiceResponse();
 
-  utilities.speak(twiml, 'Por favor, diga a frase seguinte para se autenticar ');
+  utilities.speak(twiml, 'Por favor, após o bip, diga a seguinte frase para se autenticar ');
   utilities.speak(twiml, config.chosenVoicePrintPhrase, config.contentLanguage);
 
   twiml.record({
@@ -290,12 +290,11 @@ app.post('/process_authentication', function(req, res) {
   function auth200Logic(twiml,voiceIt){
     if (voiceIt.ResponseCode == "SUC") {
       console.log("Authentication successful logic");
-      utilities.speak(twiml, voiceIt.Result);
+     
       //Thank them for calling
-
       utilities.speak(twiml,'Obrigada por ligar para a demonstração da Stefanini Rafael. Sua nova senha é. ' + 
      random() + ' ' + random() + ' '+ random() + ' ' + random());
-
+     utilities.speak(twiml, voiceIt.Result);
       //Hang up
     } else if (numTries > 2) {
       //3 attempts failed
