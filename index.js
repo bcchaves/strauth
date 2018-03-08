@@ -48,7 +48,7 @@ app.post('/incoming_call', function(req, res) {
     if (getUserResponse.ResponseCode === "SUC") {
 
       // Greet the caller when their account profile is recognized by the VoiceIt API.
-      utilities.speak(twiml, "Seja bem-vindo novamente à demonstração Stefanini Rafael istrauti.");
+      utilities.speak(twiml, "Seja bem-vindo novamente à demonstração por voz da Cap.");
 
       // Let's provide the caller with an opportunity to enroll by typing `1` on
       // their phone's keypad.
@@ -74,7 +74,7 @@ app.post('/incoming_call', function(req, res) {
         callback: function(createUserResponse){
           console.log("The Server Responded with the JSON: ",createUserResponse);
           createUserResponse = JSON.parse(createUserResponse);
-          utilities.speak(twiml, "Seja bem-vindo à demonstração da Stefanini Rafael istrauti. Como este é seu primeiro acesso, será necessário se cadastrar.");
+          utilities.speak(twiml, "Seja bem-vindo à demonstração por voz da Cap. Como este é seu primeiro acesso, será necessário se cadastrar.");
           twiml.redirect('/enroll');
           res.type('text/xml');
           res.send(twiml.toString());
@@ -292,7 +292,7 @@ app.post('/process_authentication', function(req, res) {
       console.log("Authentication successful logic");
      
       //Thank them for calling
-      utilities.speak(twiml,'Obrigada por ligar para a demonstração da Stefanini Rafael. Sua nova senha é. ' + 
+      utilities.speak(twiml,'Obrigada por ligar para a Cap. Sua nova senha é. ' + 
      random() + ' ' + random() + ' '+ random() + ' ' + random());
      utilities.speak(twiml, voiceIt.Result);
       //Hang up
